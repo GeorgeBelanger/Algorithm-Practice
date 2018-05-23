@@ -1,0 +1,126 @@
+list_of_ints = [5,2,6,1,9,0,4]
+
+def greatest_product_of_three(list_of_ints)
+  biggest_three_ints = list_of_ints.first(3)
+  i = 3
+  smallest_num = smallest_of_three(biggest_three_ints)
+  while i < list_of_ints.length
+    if list_of_ints[i] > smallest_num
+      biggest_three_ints.delete(smallest_num)
+      biggest_three_ints << list_of_ints[i]
+      smallest_num = smallest_of_three(biggest_three_ints)
+    end
+    i+=1
+  end
+  return biggest_three_ints.inject(:*)
+end
+
+def smallest_of_three(list_of_ints)
+  x = 0
+  acc = 10
+  while x < list_of_ints.length
+    if list_of_ints[x] < acc 
+      acc = list_of_ints[x]
+    end
+  x += 1
+  end
+  return acc
+end
+
+
+
+
+def greatest_product_of_three_abs_slow(array)
+  if array.min(2).inject(:*) > array.max(2).inject(:*)
+    greatest = array.min(2) << array.max
+  else
+    greatest = array.max(3).inject(:*)
+  end
+p greatest
+end
+
+
+
+
+list_of_ints_neg = [-9,8,7,-8,2,1,0,-6]
+list_of_ints_neg_two = [9,8,7,-8,2,1,0,-10]
+
+def greatest_product_of_three_abs(array)
+  i = 3
+  biggest = array.first(3)
+  smallest = array.first(2)
+  last_big = biggest.min
+  last_small = smallest.max  
+  while i < array.length
+    if array[i] < last_small
+      smallest.delete(last_small)
+      smallest << array[i]
+      last_small = smallest.max 
+    end
+    if array[i] > last_big
+      biggest.delete(last_big)
+      biggest << array[i]
+      last_big = biggest.min
+    end
+    i+= 1
+  end
+  if smallest.inject(:*) > biggest.first(2).inject(:*)
+    greatest = smallest << biggest.max
+  else
+    greatest = biggest
+  end
+p greatest.inject(:*)
+end
+
+greatest_product_of_three_abs(list_of_ints_neg)
+greatest_product_of_three_abs(list_of_ints_neg_two)
+
+
+def highest_product_of_3(array_of_ints)
+  raise ArgumentError, 'Less than 3 items!' if array_of_ints.length < 3
+  highest = array_of_ints.first(2).max
+  lowest =  array_of_ints.first(2).min
+  highest_product_of_2 = array_of_ints[0] * array_of_ints[1]
+  lowest_product_of_2  = array_of_ints[0] * array_of_ints[1]
+  highest_product_of_3 = array_of_ints[0] * array_of_ints[1] * array_of_ints[2]
+  
+  array_of_ints.each_with_index do |current, index|
+    next if index < 2
+    highest_product_of_3 = [highest_product_of_3, current * highest_product_of_2, current * lowest_product_of_2].max
+    highest_product_of_2 = [highest_product_of_2, current * highest , current * lowest].max
+    lowest_product_of_2 = [lowest_product_of_2, current * highest , current * lowest].min
+    highest = [highest, current].max
+    lowest = [lowest, current].min
+  end
+
+  highest_product_of_3
+end
+
+highest_product_of_3(list_of_ints_neg_two)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
