@@ -1,0 +1,27 @@
+myArray     = [3, 4, 6, 10, 11, 15, 21, 23];
+alicesArray = [1, 5, 8, 12, 14, 19, 20, 22];
+
+def mergeArrays(array1, array2)
+  array3 = []
+  i = 0
+  j = 0
+  while i <= array1.length && j <= array2.length
+    if array1[i] == nil && array2[j] == nil
+      return array3
+    elsif array1[i].nil?
+      array3 << array2[j]
+      j+= 1
+    elsif array2[j].nil?
+      array3 << array1[i]
+      i+= 1
+    elsif array1[i] < array2[j]
+      array3 << array1[i]
+      i+= 1
+    else 
+      array3 << array2[j]
+      j+= 1
+    end
+  end
+end
+
+mergeArrays(myArray, alicesArray)
