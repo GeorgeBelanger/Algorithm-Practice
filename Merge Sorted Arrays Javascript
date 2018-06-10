@@ -1,0 +1,31 @@
+var myArray     = [6, 10, 11, 15, 18, 23, 25, 26];
+var alicesArray = [1, 5, 8, 12, 14, 20, 22, 23];
+
+function mergeArrays(myArray, alicesArray){
+  var alicesArrayIndex = 0;
+  var myArrayIndex = 0;
+  while (myArrayIndex < myArray.length){ 
+    // Testing to see why I was not getting a return value if the arrays weren't within 1 length of each other
+    // console.log(alicesArray)
+    // console.log("alicesArrayIndex " + alicesArrayIndex)
+    // console.log("myArrayIndex " + myArrayIndex)
+    
+    // If we're at the end of the second array(Alices), then we can add the rest of the first sorted array(mine)
+    if (alicesArray[alicesArrayIndex] === undefined) {
+      while (myArrayIndex < myArray.length) {
+        alicesArray.push(myArray[myArrayIndex]);
+        myArrayIndex++;
+      };
+    } else if (myArray[myArrayIndex] < alicesArray[alicesArrayIndex]) {
+      // Insert the value at my array before the value in Alices array
+      alicesArray.splice(alicesArrayIndex,0,myArray[myArrayIndex]);
+      myArrayIndex++;
+      alicesArrayIndex++;
+    } else {
+      alicesArrayIndex++;
+    }
+  }
+  return alicesArray
+}
+
+mergeArrays(myArray, alicesArray);
