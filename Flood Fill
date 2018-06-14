@@ -1,0 +1,86 @@
+colorGrid = {
+  0 => {0 => "red", 1 => "blue", 2 => "green", 3 => "green"}, 
+  1 => {0 => "red", 1 => "blue", 2 => "blue", 3 => "green"},
+  2 => {0 => "red", 1 => "blue", 2 => "green", 3 => "red"},
+  3 => {0 => "green", 1 => "blue", 2 => "green", 3 => "green"} 
+}
+
+
+def floodFill(colorGrid)
+  state = {
+  "currentNumberOfJumps" => 0,
+  "currentColor" => "",
+  "greatestNumberOfJumps" => 0,
+  "greatestNumberOfJumpsColor" => "",
+  "nodesAlreadyVisited" => []
+  }
+  def traverse(x,y,colorGrid,state)
+    while y <= 3
+      while x <=3
+        currentNode = x.to_s + y.to_s
+        puts currentNode
+        p state["nodesAlreadyVisited"]
+        p !state["nodesAlreadyVisited"].include?(currentNode)
+        if !state["nodesAlreadyVisited"].include?(currentNode)
+          state["currentColor"] = colorGrid[x][y]
+          if !colorGrid[x+1].nil?
+            if !colorGrid[x+1][y].nil?
+              if state["currentColor"] == colorGrid[x+1][y]
+                state["nodesAlreadyVisited"] << currentNode
+                state["currentNumberOfJumps"] += 1    
+                if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
+                  state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
+                  state["greatestNumberOfJumpsColor"] = state["currentColor"]
+                end
+                traverse(x+1, y, colorGrid,state)
+              end
+            end
+          end
+          if !colorGrid[x][y-1].nil?
+            if state["currentColor"] == colorGrid[x][y-1]
+              state["nodesAlreadyVisited"] << currentNode
+              state["currentNumberOfJumps"] += 1   
+              if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
+                state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
+                state["greatestNumberOfJumpsColor"] = state["currentColor"]
+              end
+              traverse(x, y-1, colorGrid,state) 
+            end
+          end
+          if !colorGrid[x-1].nil?
+            if !colorGrid[x-1][y].nil?
+              if state["currentColor"] == colorGrid[x-1][y]
+                state["nodesAlreadyVisited"] << currentNode
+                state["currentNumberOfJumps"] += 1  
+                if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
+                  state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
+                  state["greatestNumberOfJumpsColor"] = state["currentColor"]
+                end          
+                traverse(x-1, y, colorGrid,state)  
+              end
+            end
+          end
+          if !colorGrid[x][y+1].nil?
+            if state["currentColor"] == colorGrid[x][y+1]
+              state["nodesAlreadyVisited"] << currentNode
+              state["currentNumberOfJumps"] += 1    
+              if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
+                state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
+                state["greatestNumberOfJumpsColor"] = state["currentColor"]
+              end       
+              traverse(x, y+1, colorGrid,state)   
+            end
+          end
+        end
+        state["currentNumberOfJumps"] = 0
+        x+=1
+      end
+      y+=1
+    end
+    puts state["greatestNumberOfJumps"]
+    puts state["greatestNumberOfJumpsColor"]
+  end
+  traverse(0,0,colorGrid,state)
+end
+
+floodFill(colorGrid)
