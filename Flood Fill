@@ -1,6 +1,6 @@
 colorGrid = {
-  0 => {0 => "red", 1 => "red", 2 => "green"}, 
-  1 => {0 => "red", 1 => "blue", 2 => "blue"},
+  0 => {0 => "red", 1 => "red", 2 => "blue"}, 
+  1 => {0 => "red", 1 => "red", 2 => "blue"},
   2 => {0 => "red", 1 => "blue", 2 => "green"}
 }
 
@@ -33,6 +33,7 @@ def floodFill(colorGrid)
               if !state["nodesAlreadyVisited"].include?(x.to_s + (y+1).to_s)
                 state["currentNumberOfJumps"] += 1    
                 p "east"
+                p state["currentNumberOfJumps"]
                 if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
                   state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
                   state["greatestNumberOfJumpsColor"] = state["currentColor"]
@@ -47,6 +48,7 @@ def floodFill(colorGrid)
                 if !state["nodesAlreadyVisited"].include?((x+1).to_s + y.to_s)
                   state["currentNumberOfJumps"] += 1    
                   p "south"
+                  p state["currentNumberOfJumps"]
                   if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
                     state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
                     state["greatestNumberOfJumpsColor"] = state["currentColor"]
