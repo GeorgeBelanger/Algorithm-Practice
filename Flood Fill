@@ -1,7 +1,7 @@
 colorGrid = {
-  0 => {0 => "red", 1 => "red", 2 => "blue"}, 
-  1 => {0 => "red", 1 => "red", 2 => "blue"},
-  2 => {0 => "red", 1 => "blue", 2 => "green"}
+  0 => {0 => "yellow", 1 => "red", 2 => "blue"}, 
+  1 => {0 => "yellow", 1 => "red", 2 => "blue"},
+  2 => {0 => "red", 1 => "blue", 2 => "blue"}
 }
 
 
@@ -19,74 +19,77 @@ def floodFill(colorGrid)
         x = 0
       end
       while x <= 2
-        currentNode = x.to_s + y.to_s
-        if !state["nodesAlreadyVisited"].include?(currentNode)
-          puts currentNode
-          p state["nodesAlreadyVisited"]
-          p !state["nodesAlreadyVisited"].include?(currentNode)
-        end
-        if !state["nodesAlreadyVisited"].include?(currentNode)
-          state["nodesAlreadyVisited"] << currentNode
-          state["currentColor"] = colorGrid[x][y]
-          if !colorGrid[x][y+1].nil?
-            if state["currentColor"] == colorGrid[x][y+1]
-              if !state["nodesAlreadyVisited"].include?(x.to_s + (y+1).to_s)
-                state["currentNumberOfJumps"] += 1    
-                p "east"
-                p state["currentNumberOfJumps"]
-                if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
-                  state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
-                  state["greatestNumberOfJumpsColor"] = state["currentColor"]
-                end       
-                traverse(x, y+1, colorGrid,state)   
-              end
-            end
+        def subTraverse(x,y,colorGrid,state)
+          currentNode = x.to_s + y.to_s
+          if !state["nodesAlreadyVisited"].include?(currentNode)
+            puts currentNode
+            p state["nodesAlreadyVisited"]
+            p !state["nodesAlreadyVisited"].include?(currentNode)
           end
-          if !colorGrid[x+1].nil?
-            if !colorGrid[x+1][y].nil?
-              if state["currentColor"] == colorGrid[x+1][y]
-                if !state["nodesAlreadyVisited"].include?((x+1).to_s + y.to_s)
+          if !state["nodesAlreadyVisited"].include?(currentNode)
+            state["nodesAlreadyVisited"] << currentNode
+            state["currentColor"] = colorGrid[x][y]
+            if !colorGrid[x][y+1].nil?
+              if state["currentColor"] == colorGrid[x][y+1]
+                if !state["nodesAlreadyVisited"].include?(x.to_s + (y+1).to_s)
                   state["currentNumberOfJumps"] += 1    
-                  p "south"
+                  p "east"
                   p state["currentNumberOfJumps"]
                   if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
                     state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
                     state["greatestNumberOfJumpsColor"] = state["currentColor"]
-                  end
-                  traverse(x+1, y, colorGrid,state)
+                  end       
+                  subTraverse(x, y+1, colorGrid,state)   
                 end
               end
             end
-          end
-          if !colorGrid[x][y-1].nil?
-            if state["currentColor"] == colorGrid[x][y-1]
-              if !state["nodesAlreadyVisited"].include?(x.to_s + (y-1).to_s)
-                state["currentNumberOfJumps"] += 1   
-                p "west"
-                if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
-                  state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
-                  state["greatestNumberOfJumpsColor"] = state["currentColor"]
+            if !colorGrid[x+1].nil?
+              if !colorGrid[x+1][y].nil?
+                if state["currentColor"] == colorGrid[x+1][y]
+                  if !state["nodesAlreadyVisited"].include?((x+1).to_s + y.to_s)
+                    state["currentNumberOfJumps"] += 1    
+                    p "south"
+                    p state["currentNumberOfJumps"]
+                    if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
+                      state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
+                      state["greatestNumberOfJumpsColor"] = state["currentColor"]
+                    end
+                    subTraverse(x+1, y, colorGrid,state)
+                  end
                 end
-                traverse(x, y-1, colorGrid,state)
-              end 
+              end
             end
-          end
-          if !colorGrid[x-1].nil?
-            if !colorGrid[x-1][y].nil?
-              if state["currentColor"] == colorGrid[x-1][y]
-                if !state["nodesAlreadyVisited"].include?((x-1).to_s + y.to_s)
-                  state["currentNumberOfJumps"] += 1  
-                  p "north"
+            if !colorGrid[x][y-1].nil?
+              if state["currentColor"] == colorGrid[x][y-1]
+                if !state["nodesAlreadyVisited"].include?(x.to_s + (y-1).to_s)
+                  state["currentNumberOfJumps"] += 1   
+                  p "west"
                   if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
                     state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
                     state["greatestNumberOfJumpsColor"] = state["currentColor"]
-                  end          
-                  traverse(x-1, y, colorGrid,state)  
+                  end
+                  subTraverse(x, y-1, colorGrid,state)
+                end 
+              end
+            end
+            if !colorGrid[x-1].nil?
+              if !colorGrid[x-1][y].nil?
+                if state["currentColor"] == colorGrid[x-1][y]
+                  if !state["nodesAlreadyVisited"].include?((x-1).to_s + y.to_s)
+                    state["currentNumberOfJumps"] += 1  
+                    p "north"
+                    if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
+                      state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
+                      state["greatestNumberOfJumpsColor"] = state["currentColor"]
+                    end          
+                    subTraverse(x-1, y, colorGrid,state)  
+                  end
                 end
               end
             end
           end
         end
+        subTraverse(x,y,colorGrid,state)
         state["currentNumberOfJumps"] = 0
         x+=1
       end
