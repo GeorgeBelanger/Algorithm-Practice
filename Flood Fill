@@ -1,104 +1,70 @@
 colorGrid = {
   0 => {0 => "yellow", 1 => "red", 2 => "blue"}, 
   1 => {0 => "yellow", 1 => "red", 2 => "blue"},
-  2 => {0 => "red", 1 => "blue", 2 => "blue"}
+  2 => {0 => "blue", 1 => "blue", 2 => "blue"}
 }
 
 
-def floodFill(colorGrid)
-  state = {
-  "currentNumberOfJumps" => 0,
-  "currentColor" => "",
-  "greatestNumberOfJumps" => 0,
-  "greatestNumberOfJumpsColor" => "",
-  "nodesAlreadyVisited" => []
-  }
-  def traverse(x,y,colorGrid,state)
-    while y <= 2
-      if state["currentNumberOfJumps"] == 0
-        x = 0
-      end
-      while x <= 2
-        def subTraverse(x,y,colorGrid,state)
-          currentNode = x.to_s + y.to_s
-          if !state["nodesAlreadyVisited"].include?(currentNode)
-            puts currentNode
-            p state["nodesAlreadyVisited"]
-            p !state["nodesAlreadyVisited"].include?(currentNode)
-          end
-          if !state["nodesAlreadyVisited"].include?(currentNode)
-            state["nodesAlreadyVisited"] << currentNode
-            state["currentColor"] = colorGrid[x][y]
-            if !colorGrid[x][y+1].nil?
-              if state["currentColor"] == colorGrid[x][y+1]
-                if !state["nodesAlreadyVisited"].include?(x.to_s + (y+1).to_s)
-                  state["currentNumberOfJumps"] += 1    
-                  p "east"
-                  p state["currentNumberOfJumps"]
-                  if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
-                    state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
-                    state["greatestNumberOfJumpsColor"] = state["currentColor"]
-                  end       
-                  subTraverse(x, y+1, colorGrid,state)   
-                end
-              end
-            end
-            if !colorGrid[x+1].nil?
-              if !colorGrid[x+1][y].nil?
-                if state["currentColor"] == colorGrid[x+1][y]
-                  if !state["nodesAlreadyVisited"].include?((x+1).to_s + y.to_s)
-                    state["currentNumberOfJumps"] += 1    
-                    p "south"
-                    p state["currentNumberOfJumps"]
+def floodFill(x,y,colorGrid,state)
+  while y <= 2
+    if state["currentNumberOfJumps"] == 0
+      x = 0
+    end
+    while x <= 2
+      def checkNeighbors(x,y,colorGrid,state)
+        currentNode = x.to_s + y.to_s
+        # Console log code goes here
+        if !state["nodesAlreadyVisited"].include?(currentNode)
+          state["nodesAlreadyVisited"] << currentNode
+          state["currentColor"] = colorGrid[x][y]
+          def checkOneNeighbor(x,y,colorGrid,state)
+            if !colorGrid[x].nil?
+              if !colorGrid[x][y].nil?
+                if state["currentColor"] == colorGrid[x][y]
+                  if !state["nodesAlreadyVisited"].include?((x).to_s + y.to_s)
+                    state["currentNumberOfJumps"] += 1   
                     if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
                       state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
                       state["greatestNumberOfJumpsColor"] = state["currentColor"]
                     end
-                    subTraverse(x+1, y, colorGrid,state)
-                  end
-                end
-              end
-            end
-            if !colorGrid[x][y-1].nil?
-              if state["currentColor"] == colorGrid[x][y-1]
-                if !state["nodesAlreadyVisited"].include?(x.to_s + (y-1).to_s)
-                  state["currentNumberOfJumps"] += 1   
-                  p "west"
-                  if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
-                    state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
-                    state["greatestNumberOfJumpsColor"] = state["currentColor"]
-                  end
-                  subTraverse(x, y-1, colorGrid,state)
-                end 
-              end
-            end
-            if !colorGrid[x-1].nil?
-              if !colorGrid[x-1][y].nil?
-                if state["currentColor"] == colorGrid[x-1][y]
-                  if !state["nodesAlreadyVisited"].include?((x-1).to_s + y.to_s)
-                    state["currentNumberOfJumps"] += 1  
-                    p "north"
-                    if state["currentNumberOfJumps"] > state["greatestNumberOfJumps"]
-                      state["greatestNumberOfJumps"] = state["currentNumberOfJumps"]
-                      state["greatestNumberOfJumpsColor"] = state["currentColor"]
-                    end          
-                    subTraverse(x-1, y, colorGrid,state)  
+                    checkNeighbors(x, y, colorGrid,state)
                   end
                 end
               end
             end
           end
+          checkOneNeighbor(x,y+1,colorGrid,state)
+          checkOneNeighbor(x-1,y,colorGrid,state)
+          checkOneNeighbor(x,y-1,colorGrid,state)
+          checkOneNeighbor(x+1,y,colorGrid,state)
         end
-        subTraverse(x,y,colorGrid,state)
-        state["currentNumberOfJumps"] = 0
-        x+=1
       end
+      checkNeighbors(x,y,colorGrid,state)
       state["currentNumberOfJumps"] = 0
-      y+=1
+      x+=1
     end
-    return state["greatestNumberOfJumpsColor"] + " " + (state["greatestNumberOfJumps"] + 1).to_s
+    state["currentNumberOfJumps"] = 0
+    y+=1
   end
-  traverse(0,0,colorGrid,state)
+  return state["greatestNumberOfJumpsColor"] + " has the greatest amount of connected squares at " + (state["greatestNumberOfJumps"] + 1).to_s
 end
 
-floodFill(colorGrid)
+state = {
+"currentNumberOfJumps" => 0,
+"currentColor" => "",
+"greatestNumberOfJumps" => 0,
+"greatestNumberOfJumpsColor" => "",
+"nodesAlreadyVisited" => []
+}
+
+floodFill(0,0,colorGrid,state)
+
+
+
+
+        # my console log status checking variables
+        # if !state["nodesAlreadyVisited"].include?(currentNode)
+        #   puts currentNode
+        #   p state["nodesAlreadyVisited"]
+        #   p !state["nodesAlreadyVisited"].include?(currentNode)
+        # end
