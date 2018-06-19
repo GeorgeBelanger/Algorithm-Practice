@@ -1,0 +1,60 @@
+//let's write a function to tell us if a full deck of cards shuffledDeck is a single riffle of two other halves half1 and half2.
+//1 cut the deck into halves half1 and half2
+//2 grab a random number of cards from the top of half1 (could be 0, must be less than or equal to the number of cards left in half1) and throw them into the shuffledDeck
+//3 grab a random number of cards from the top of half2 (could be 0, must be less than or equal to the number of cards left in half2) and throw them into the shuffledDeck
+//4 repeat steps 2-3 until half1 and half2 are empty
+
+
+var half1 = [1,2,3,4,5,6,7,8,9,10];
+var half2 = [11,22,33,44,55,66,77,88,99,1010];
+
+
+function shuffleCards(half1,half2){
+  let i = 0;
+  let deck = [];
+    while (half1.length>0 || half2.length>0){
+      if (i%2 == 0){
+        half = half1;
+      } else {
+        half = half2;
+      }
+      stack = Math.ceil(Math.random() * Math.ceil(half.length));
+      deck.push(half.slice(0,stack));
+      half.splice(0,stack);
+      i++;
+    }
+  deck = [].concat.apply([], deck);
+  return deck;
+}
+
+deck = shuffleCards(half1,half2)
+
+var half1 = [1,2,3,4,5,6,7,8,9,10];
+var half2 = [11,22,33,44,55,66,77,88,99,1010];
+
+function shuffledDeck(deck,half1,half2){
+  if (deck[0] == half1[0]){
+    firstHalf = half1;
+    secondHalf = half2;
+  } else if(deck[0] == half2[0]){
+    firstHalf = half2;
+    secondHalf = half1;
+  } else{
+    // console.log(deck)
+    // console.log(half1)
+    // console.log(half2)
+    return "not a riffle shuffle";
+  }
+  while (secondHalf.length>0 || firstHalf.length>0){
+    var halfCurrentCardIndex = deck.indexOf(secondHalf[0]);
+    // console.log(halfCurrentCard);
+    // console.log(deck.slice(0,halfCurrentCard))
+    // console.log(firstHalf.slice(0,halfCurrentCard))
+    if (deck.slice(0,halfCurrentCardIndex).length == firstHalf.slice(0,halfCurrentCardIndex).length){
+      return "deck was riffle shuffled";
+    }
+  }
+}
+
+shuffledDeck(deck,half1,half2)
+ 
