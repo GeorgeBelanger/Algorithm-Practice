@@ -9,7 +9,7 @@ var half1 = [1,2,3,4,5,6,7,8,9,10];
 var half2 = [11,22,33,44,55,66,77,88,99,1010];
 
 
-function shuffleCards(half1,half2){
+function riffleShuffle(half1,half2){
   let i = 0;
   let deck = [];
     while (half1.length>0 || half2.length>0){
@@ -27,12 +27,12 @@ function shuffleCards(half1,half2){
   return deck;
 }
 
-deck = shuffleCards(half1,half2)
+deck = riffleShuffle(half1,half2)
 
 var half1 = [1,2,3,4,5,6,7,8,9,10];
 var half2 = [11,22,33,44,55,66,77,88,99,1010];
 
-function shuffledDeck(deck,half1,half2){
+function checkForRiffleShuffle(deck,half1,half2){
   if (deck[0] == half1[0]){
     firstHalf = half1;
     secondHalf = half2;
@@ -56,5 +56,5 @@ function shuffledDeck(deck,half1,half2){
   }
 }
 
-shuffledDeck(deck,half1,half2)
+checkForRiffleShuffle(deck,half1,half2)
  
